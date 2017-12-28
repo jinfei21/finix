@@ -59,7 +59,7 @@ The quick start gives very basic example of running client and server on the sam
 
 * 费永军([@feiyongjun](https://github.com/jinfei21))
 * 黄印煌([@huangyinghua](https://github.com/jinfei21))
-* 尹作龙([@yinzuolong](https://github.com/jinfei21))
+* 尹作龙([@yinzuolong](https://github.com/yzl14141141))
 
 # License
 
