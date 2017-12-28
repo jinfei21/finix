@@ -52,13 +52,13 @@ The quick start gives very basic example of running client and server on the sam
 
 # Documents
 
-* [Wiki](TBD)
+* [Wiki  TBD](TBD)
 
 
 # Contributors
 
-* feiyongjun([@feiyongjun](https://github.com/jinfei21))
-
+* 费永军([@feiyongjun](https://github.com/jinfei21))
+* 黄印煌([@huangyinghua](https://github.com/jinfei21))
 
 # License
 
