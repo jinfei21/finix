@@ -69,5 +69,6 @@ Finix is released under the [Apache License 2.0](http://www.apache.org/licenses/
 [gradle]:http://gradle.org
 [consul]:http://www.consul.io
 [zookeeper]:http://zookeeper.apache.org
+[etcd]:https://coreos.com/etcd/
 
 
