@@ -173,22 +173,42 @@ public class URL {
         return value;
     }
 
-    public String getMethodParameter(String methodName, String paramDesc, String name) {
-        String value = getParameter(Constants.METHOD_CONFIG_PREFIX + methodName + "(" + paramDesc + ")." + name);
+    public String getMethodParameter(String methodName,  String name) {
+        String value = getParameter(getMethodParameterKey(methodName, name));;
         if (value == null || value.length() == 0) {
             return getParameter(name);
         }
         return value;
     }
+    
+    private String getMethodParameterKey(String methodName, String name) {
+        return Constants.METHOD_CONFIG_PREFIX + methodName + "." + name;
+    }
 
-    public String getMethodParameter(String methodName, String paramDesc, String name, String defaultValue) {
-        String value = getMethodParameter(methodName, paramDesc, name);
+
+    public String getMethodParameter(String methodName, String name, String defaultValue) {
+        String value = getMethodParameter(methodName, name);
         if (value == null || value.length() == 0) {
             return defaultValue;
         }
         return value;
     }
 
+    public Integer getMethodParameter(String methodName, String name, int defaultValue) {
+        String key = getMethodParameterKey(methodName, name);
+        Number n = getNumbers().get(key);
+        if (n != null) {
+            return n.intValue();
+        }
+        String value = getMethodParameter(methodName, name);
+        if (value == null || value.length() == 0) {
+            return defaultValue;
+        }
+        int i = Integer.parseInt(value);
+        getNumbers().put(key, i);
+        return i;
+    }
+    
     public void addParameter(String name, String value) {
         if (StringUtils.isEmpty(name) || StringUtils.isEmpty(value)) {
             return;

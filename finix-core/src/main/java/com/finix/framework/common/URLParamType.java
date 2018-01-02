@@ -6,7 +6,8 @@ public enum URLParamType {
     serialize("serialization", "hessian2"),
     
     
-    
+    retries("retries", 0),
+
 	version("version",Constants.DEFAULT_VERSION);
 	
     private String name;

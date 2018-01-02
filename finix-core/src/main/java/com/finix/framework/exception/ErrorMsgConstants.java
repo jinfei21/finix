@@ -10,6 +10,10 @@ public class ErrorMsgConstants {
     public static final int FRAMEWORK_DEFAULT_ERROR_CODE = 20001;
     
     
+    // biz exception
+    public static final int BIZ_DEFAULT_ERROR_CODE = 30001;
+    
+    
     /**
      * service error start
      **/
@@ -21,5 +25,10 @@ public class ErrorMsgConstants {
      * framework error start
      **/
     public static final FinixErrorMsg FRAMEWORK_DEFAULT_ERROR = new FinixErrorMsg(503, FRAMEWORK_DEFAULT_ERROR_CODE,"framework default error");
+    
+    /**
+     * biz error start
+     **/
+    public static final FinixErrorMsg BIZ_DEFAULT_EXCEPTION = new FinixErrorMsg(503, BIZ_DEFAULT_ERROR_CODE, "provider error");
     
 }
