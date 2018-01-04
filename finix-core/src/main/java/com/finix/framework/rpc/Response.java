@@ -52,8 +52,4 @@ public interface Response {
 
     void setAttachment(String key, String value);
 
-    // 获取rpc协议版本，可以依据协议版本做返回值兼容
-    void setRpcProtocolVersion(byte rpcProtocolVersion);
-
-    byte getRpcProtocolVersion();
 }

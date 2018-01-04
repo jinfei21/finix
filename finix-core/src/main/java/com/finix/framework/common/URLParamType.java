@@ -2,15 +2,17 @@ package com.finix.framework.common;
 
 public enum URLParamType {
 
-    /** serialize **/
-    serialize("serialization", "hessian2"),
-    
+    /** serialize **/    
+    serialization("x-serialization", "protobuf.bin"),
+
     haStrategy("haStrategy", "failover"),
     loadbalance("loadbalance", "roundrobin"),
 
     
     retries("retries", 0),
-
+    nodeType("nodeType", Constants.NODE_TYPE_SERVICE),
+    transExceptionStack("transExceptionStack", true),
+    basePath("basePath", "/"),
 	version("version",Constants.DEFAULT_VERSION);
 	
     private String name;

@@ -1,7 +1,9 @@
 package com.finix.framework.rpc;
 
-public interface Refer extends Caller{
+public interface Refer<T> extends Caller{
 	
+    String getInterface();
+    
 	boolean isAvailable();
 	
 	URL getReferUrl();
