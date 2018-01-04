@@ -7,6 +7,7 @@ import com.finix.framework.rpc.URL;
 
 public interface Cluster {
 
+	String getInterfaceClass();
 	void init();
 	void destroy();
 	void onRefresh(List<URL> serviceUrls);

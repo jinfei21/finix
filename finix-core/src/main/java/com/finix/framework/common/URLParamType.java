@@ -5,6 +5,9 @@ public enum URLParamType {
     /** serialize **/
     serialize("serialization", "hessian2"),
     
+    haStrategy("haStrategy", "failover"),
+    loadbalance("loadbalance", "roundrobin"),
+
     
     retries("retries", 0),
 
