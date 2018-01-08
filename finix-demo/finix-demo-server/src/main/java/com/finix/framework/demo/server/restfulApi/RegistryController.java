@@ -16,6 +16,7 @@ public class RegistryController {
 
     @Autowired
     Registry registry;
+    
     @Autowired
     FinixServletEndpoint endpoint;
 

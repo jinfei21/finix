@@ -29,7 +29,7 @@ public class FinixServiceAutoConfiguration {
     @ConditionalOnMissingBean(FinixServletEndpoint.class)
     public FinixServletEndpoint createServletEndpoint() {
         int port = Integer.parseInt(env.getProperty("server.port", "8080"));
-        String path = env.getProperty("finix.service.basePath", "beam");
+        String path = env.getProperty("finix.service.basePath", "finix");
         URL baseUrl = URL.builder()
                 .host(NetUtil.getLocalIp())
                 .port(port)

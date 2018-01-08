@@ -12,5 +12,6 @@ public class ClientConfig {
     private int poolMaxPreRoute = 60;
     private int retryCount = 0;
     private boolean requestSentRetryEnabled = false;
-    
+    private String loadBalancer = URLParamType.loadbalance.getValue();
+    private String haStrategy = URLParamType.haStrategy.getValue();
 }

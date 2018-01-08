@@ -2,7 +2,6 @@ package com.finix.framework.spring.autoconfig;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.BeansException;
@@ -15,12 +14,14 @@ import com.finix.framework.cluster.HaStrategyFactory;
 import com.finix.framework.cluster.LoadBalance;
 import com.finix.framework.cluster.LoadBalanceFactory;
 import com.finix.framework.cluster.support.DefaultClusterCaller;
+import com.finix.framework.common.URLParamType;
 import com.finix.framework.exception.FinixFrameworkException;
 import com.finix.framework.proxy.ClusterInvocationHandler;
 import com.finix.framework.proxy.JdkProxyFactory;
 import com.finix.framework.registry.Registry;
 import com.finix.framework.rpc.Protocol;
 import com.finix.framework.rpc.URL;
+import com.google.common.collect.Maps;
 
 
 
@@ -30,13 +31,21 @@ public class FinixClientFactoryBean implements FactoryBean<Object>,
     private ApplicationContext applicationContext;
 
     private Class<?> interfaceClass;
+    
+    private String interfaceVersion;
+    
+    private int socketTimeout;
+    
+    private int requestConnectTimeout;
+    
+    private int connectTimeout;
 
     @Override
     public Object getObject() throws Exception {
         Registry registry = getRegistry();
         Protocol protocol = getProtocol();
         URL referUrl = getReferUrl();
-
+        
         DefaultClusterCaller<?> cluster = new DefaultClusterCaller<>(interfaceClass, protocol, referUrl, registry);
 
         LoadBalanceFactory loadBalanceFactory = applicationContext.getBean(LoadBalanceFactory.class);
@@ -73,7 +82,13 @@ public class FinixClientFactoryBean implements FactoryBean<Object>,
 
     private URL getReferUrl() {
         //TODO 设置参数
-        return URL.builder().parameters(new HashMap<>()).build();
+    	Map<String, String> parameters = Maps.newHashMap();
+    	parameters.put(URLParamType.version.getName(), interfaceVersion);
+    	parameters.put(URLParamType.socketTimeout.getName(), String.valueOf(socketTimeout));
+    	parameters.put(URLParamType.requestConnectTimeout.getName(), String.valueOf(requestConnectTimeout));
+    	parameters.put(URLParamType.connectTimeout.getName(), String.valueOf(connectTimeout));
+
+        return URL.builder().parameters(parameters).build();
     }
 
     @Override
@@ -94,4 +109,22 @@ public class FinixClientFactoryBean implements FactoryBean<Object>,
     public void setInterfaceClass(Class<?> interfaceClass) {
         this.interfaceClass = interfaceClass;
     }
+    
+    public void setInterfaceVersion(String interfaceVersion){
+    	this.interfaceVersion = interfaceVersion;
+    }
+
+	public void setSocketTimeout(int socketTimeout) {
+		this.socketTimeout = socketTimeout;
+	}
+
+	public void setRequestConnectTimeout(int requestConnectTimeout) {
+		this.requestConnectTimeout = requestConnectTimeout;
+	}
+
+	public void setConnectTimeout(int connectTimeout) {
+		this.connectTimeout = connectTimeout;
+	}
+    
+    
 }

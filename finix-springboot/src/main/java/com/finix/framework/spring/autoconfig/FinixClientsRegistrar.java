@@ -59,6 +59,11 @@ public class FinixClientsRegistrar implements ImportBeanDefinitionRegistrar, Res
         String interfaceName = annotationMetadata.getClassName();
         BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(FinixClientFactoryBean.class);
         definition.addPropertyValue("interfaceClass", interfaceName);
+        definition.addPropertyValue("interfaceVersion", attributes.get("version"));
+        definition.addPropertyValue("socketTimeout", attributes.get("socketTimeout"));
+        definition.addPropertyValue("requestConnectTimeout", attributes.get("requestConnectTimeout"));
+        definition.addPropertyValue("connectTimeout", attributes.get("connectTimeout"));
+        
         definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 
         AbstractBeanDefinition beanDefinition = definition.getBeanDefinition();

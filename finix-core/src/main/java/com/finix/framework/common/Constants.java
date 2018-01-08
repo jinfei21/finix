@@ -16,6 +16,8 @@ public class Constants {
     
     public static final String NODE_TYPE_SERVICE = "service";
     public static final String NODE_TYPE_REFER = "refer";
+    public static final String NODE_TYPE_GATE = "gateway";
+
     public static final String NODE_TYPE_REGISTRY = "registry";
     
     

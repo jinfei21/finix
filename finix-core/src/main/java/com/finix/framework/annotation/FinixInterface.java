@@ -10,6 +10,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FinixInterface {
-
+	String version() default "1.0";
+	
+	int requestConnectTimeout() default 20;
+	
+	int connectTimeout() default 2000;
+	
+	int socketTimeout() default 35000;
+	
 }
 

@@ -1,0 +1,6 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.finix.framework.spring.autoconfig.FinixRegistryAutoConfiguration,\
+com.finix.framework.spring.autoconfig.FinixServiceAutoConfiguration,\
+com.finix.framework.spring.autoconfig.FinixClientAutoConfiguration,\
+com.finix.framework.spring.autoconfig.FinixProtocolAutoConfiguration

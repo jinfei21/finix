@@ -24,7 +24,7 @@ public class FinixRegistryAutoConfiguration {
     @ConditionalOnProperty(name = "finix.registry.name", havingValue = "direct", matchIfMissing = true)
     public Registry createDirectRegistry() {
         int port = Integer.parseInt(environment.getProperty("finix.registry.direct.port", "8080"));
-        String basePath = environment.getProperty("finix.service.basePath", "beam");
+        String basePath = environment.getProperty("finix.service.basePath", "finix");
         URL registryUrl = URL.builder()
                 .host(NetUtil.getLocalIp())
                 .port(port)
@@ -38,7 +38,7 @@ public class FinixRegistryAutoConfiguration {
 //    @ConditionalOnClass(FinixRadarRegistry.class)
 //    @ConditionalOnProperty(name = "finix.registry.name", havingValue = "radar")
 //    public Registry createRadarRegistry() {
-//        String basePath = environment.getProperty("finix.service.basePath", "beam");
+//        String basePath = environment.getProperty("finix.service.basePath", "finix");
 //
 //        //radar服务地址
 //        String regAddress = environment.getProperty("finix.registry.radar.address");
