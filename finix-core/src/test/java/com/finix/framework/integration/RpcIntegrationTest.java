@@ -78,7 +78,7 @@ public class RpcIntegrationTest {
         URL registryUrl = URL.builder()
                 .host(NetUtil.getLocalIp())
                 .port(8080)
-                .path("/beam")
+                .path("/finix")
                 .parameters(new HashMap<>())
                 .build();
         Registry registry = new DirectRegistry(Collections.singletonList(registryUrl));

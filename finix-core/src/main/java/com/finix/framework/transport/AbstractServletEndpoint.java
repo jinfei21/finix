@@ -35,7 +35,7 @@ public abstract class AbstractServletEndpoint extends HttpServlet implements End
     @Override
     public URL export(Provider provider, URL serviceUrl) {
         URL newServiceUrl = doExport(provider, serviceUrl);
-        String key = getProviderKey(provider.getInterface(), newServiceUrl.getParameter(URLParamType.version.name()));
+        String key = getProviderKey(provider.getInterface(), newServiceUrl.getParameter(URLParamType.version.getName(),URLParamType.version.getValue()));
         providers.put(key, provider);
         return newServiceUrl;
     }
