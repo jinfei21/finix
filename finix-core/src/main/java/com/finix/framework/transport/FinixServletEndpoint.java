@@ -92,32 +92,34 @@ public class FinixServletEndpoint extends AbstractServletEndpoint{
 		request.setReturnType(getReturnType(httpRequest));
 		request.setAttachments(getAttachments(httpRequest));		
 		request.setArguments(getRequestArguments(httpRequest, request, provider));
-		
 		RpcContext.getContext().setRequest(request);
 		
 		return request;
 	}
 	
-    protected Object[] getRequestArguments(HttpServletRequest httpRequest, Request request, Provider provider) {
-        Method method = provider.lookupMethod(request.getMethodName(), request.getParameterTypes());
-        if (method == null) {
-            throw new FinixServiceException(String.format("Can not find method %s#%s", request.getInterfaceName(), request.getMethodName()));
-        }
-        if (method.getParameterCount() == 0) {
-            return new Object[0];
-        } else if (method.getParameterCount() == 1) {
-            Serialization serialization = this.getSerialization(httpRequest);
-            try {
-                byte[] data = IOUtils.toByteArray(httpRequest.getInputStream());
-                Object argument = serialization.deserialize(data, method.getParameterTypes()[0]);
-                return new Object[]{argument};
-            } catch (IOException e) {
-                throw new FinixServiceException("Deserialize request parameter error.", e);
-            }
-        } else {
-            throw new FinixServiceException(String.format("Interface method %s#%s parameter count must less or equal 1.", request.getInterfaceName(), method.getName()));
-        }
-    }
+	protected Object[] getRequestArguments(HttpServletRequest httpRequest, Request request, Provider provider) {
+		Method method = provider.lookupMethod(request.getMethodName(), request.getParameterTypes());
+		if (method == null) {
+			throw new FinixServiceException(
+					String.format("Can not find method %s#%s", request.getInterfaceName(), request.getMethodName()));
+		}
+		if (method.getParameterCount() == 1) {
+			Serialization serialization = this.getSerialization(httpRequest);
+			try {
+				byte[] data = IOUtils.toByteArray(httpRequest.getInputStream());
+				Object argument = serialization.deserialize(data, method.getParameterTypes()[0]);
+				return new Object[] { argument };
+			} catch (IOException e) {
+				throw new FinixServiceException("Deserialize request parameter error.", e);
+			}
+		} else if (method.getParameterCount() == 0) {
+			return new Object[0];
+		} else {
+			throw new FinixServiceException(
+					String.format("Interface method %s#%s parameter count must less or equal 1.",
+							request.getInterfaceName(), method.getName()));
+		}
+	}
 	
     protected Serialization getSerialization(HttpServletRequest httpRequest) {
         return this.serializationFactory.getInstance(httpRequest.getHeader(URLParamType.serialization.getName()));

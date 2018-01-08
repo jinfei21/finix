@@ -3,8 +3,6 @@ package com.finix.framework.rpc;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.finix.framework.common.URLParamType;
-
 public class RpcContext {
     private Map<Object, Object> attributes = new HashMap<Object, Object>();
     private Map<String, String> attachments = new HashMap<String, String>();// attachment in rpc context. not same with request's attachments
