@@ -16,7 +16,7 @@ import com.finix.framework.spring.autoconfig.FinixClientsRegistrar;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Import({FinixClientsRegistrar.class, FinixClientReferProcessor.class})
-public @interface EnableBeamClients {
+public @interface EnableFinixClients {
 
     @AliasFor("basePackageClasses")
     Class<?>[] value() default {};

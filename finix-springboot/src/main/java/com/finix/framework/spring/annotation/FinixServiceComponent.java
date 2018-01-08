@@ -15,5 +15,5 @@ import com.finix.framework.annotation.FinixService;
 @Documented
 @Component
 @FinixService
-public @interface BeamServiceComponent {
+public @interface FinixServiceComponent {
 }

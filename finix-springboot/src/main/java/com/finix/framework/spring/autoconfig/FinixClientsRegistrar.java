@@ -25,7 +25,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import com.finix.framework.annotation.FinixInterface;
-import com.finix.framework.spring.annotation.EnableBeamClients;
+import com.finix.framework.spring.annotation.EnableFinixClients;
 
 public class FinixClientsRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, BeanClassLoaderAware {
     private ResourceLoader resourceLoader;
@@ -100,7 +100,7 @@ public class FinixClientsRegistrar implements ImportBeanDefinitionRegistrar, Res
     }
 
     protected Set<String> getBasePackages(AnnotationMetadata importingClassMetadata) {
-        Map<String, Object> attributes = importingClassMetadata.getAnnotationAttributes(EnableBeamClients.class.getCanonicalName());
+        Map<String, Object> attributes = importingClassMetadata.getAnnotationAttributes(EnableFinixClients.class.getCanonicalName());
         Set<String> basePackages = new HashSet<>();
         for (Class<?> clazz : (Class[]) attributes.get("value")) {
             basePackages.add(ClassUtils.getPackageName(clazz));
