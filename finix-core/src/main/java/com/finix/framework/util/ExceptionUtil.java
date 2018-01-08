@@ -1,5 +1,9 @@
 package com.finix.framework.util;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import com.finix.framework.exception.FinixAbstractException;
 import com.finix.framework.exception.FinixBizException;
 
@@ -42,6 +46,23 @@ public class ExceptionUtil {
             } catch (Exception e1) {
                 log.warn("replace remote exception stack fail!" + e1.getMessage());
             }
+        }
+    }
+    
+    public static String getStackTraceString(Throwable e) {
+    	StringWriter sw = new StringWriter();
+    	PrintWriter pw = new PrintWriter(sw);
+        try {
+            e.printStackTrace(pw);
+            return "\r\n" + sw.toString() + "\r\n";
+        } catch (Exception e1) {
+            return "ErrorInfoFromException";
+        }finally{
+        	try {
+				sw.close();
+				pw.close();
+			} catch (IOException e1) {
+			}
         }
     }
 }

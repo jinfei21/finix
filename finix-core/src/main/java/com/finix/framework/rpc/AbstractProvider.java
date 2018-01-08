@@ -11,9 +11,9 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
 
-public abstract class AbstractProvider<T> implements Provider<T>{
+public abstract class AbstractProvider<T> implements Provider{
 
-	protected Class<T> interfaceClass;
+	protected String interfaceClass;
 	
 	@Getter
 	protected Map<String,Method> methodMap;
@@ -26,7 +26,7 @@ public abstract class AbstractProvider<T> implements Provider<T>{
 	protected URL serviceUrl;
 
 	public AbstractProvider(Class<T> interfaceClass,T serviceInstance,URL serviceUrl){
-		this.interfaceClass = interfaceClass;
+		this.interfaceClass = interfaceClass.getName();
 		this.serviceInstance = serviceInstance;
 		this.serviceUrl = serviceUrl;
 		initMethodMap(interfaceClass);
@@ -94,14 +94,13 @@ public abstract class AbstractProvider<T> implements Provider<T>{
     public void init() {
 
     }
-
-    @Override
+    
     public T getImpl() {
         return this.serviceInstance;
     }
 
     @Override
-    public Class<T> getInterface() {
+    public String getInterface() {
         return this.interfaceClass;
     }
     

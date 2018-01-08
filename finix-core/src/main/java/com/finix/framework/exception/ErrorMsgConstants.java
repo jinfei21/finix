@@ -2,11 +2,20 @@ package com.finix.framework.exception;
 
 public class ErrorMsgConstants {
 
+    public static final int SUCCESS = 0;
+
+    
     // service error status 503
     public static final int SERVICE_DEFAULT_ERROR_CODE = 10001;
-    
+    public static final int SERVICE_TIMEOUT_ERROR_CODE = 10003;
+
     // service error status 404
     public static final int SERVICE_UNFOUND_ERROR_CODE = 10101;
+    
+    // service error status 3XX
+    public static final int SERVICE_REDIRECT_ERROR_CODE = 10300;
+    // service error status other
+    public static final int SERVICE_UNKNOW_ERROR_CODE = 10000;
     
     // framework error
     public static final int FRAMEWORK_DEFAULT_ERROR_CODE = 20001;
@@ -22,7 +31,7 @@ public class ErrorMsgConstants {
      **/
 
     public static final FinixErrorMsg SERVICE_DEFAULT_ERROR = new FinixErrorMsg(503, SERVICE_DEFAULT_ERROR_CODE, "service error");
-    
+    public static final FinixErrorMsg SERVICE_TIMEOUT = new FinixErrorMsg(503, SERVICE_TIMEOUT_ERROR_CODE, "service request timeout");
     public static final FinixErrorMsg SERVICE_UNFOUND = new FinixErrorMsg(404, SERVICE_UNFOUND_ERROR_CODE, "service unfound");
 
     /**

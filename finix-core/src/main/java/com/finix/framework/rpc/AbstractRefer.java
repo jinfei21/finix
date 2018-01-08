@@ -3,15 +3,15 @@ package com.finix.framework.rpc;
 import com.finix.framework.exception.FinixFrameworkException;
 import com.finix.framework.util.FinixFrameworkUtil;
 
-public abstract class AbstractRefer<T> implements Refer<T>{
+public abstract class AbstractRefer implements Refer{
 
-	private Class<T> interfaceClass;
+	private String interfaceClass;
 	
 	private URL referUrl;
 	
 	private URL serviceUrl;
 	
-	public AbstractRefer(Class<T> interfaceClass,URL referUrl,URL serviceUrl){
+	public AbstractRefer(String interfaceClass,URL referUrl,URL serviceUrl){
 		this.interfaceClass = interfaceClass;
 		this.referUrl = referUrl;
 		this.serviceUrl = serviceUrl;
@@ -43,7 +43,7 @@ public abstract class AbstractRefer<T> implements Refer<T>{
 	
 	@Override
 	public String getInterface() {
-		return this.interfaceClass.getName();
+		return this.interfaceClass;
 	}
 
 	protected abstract Response doCall(Request request);

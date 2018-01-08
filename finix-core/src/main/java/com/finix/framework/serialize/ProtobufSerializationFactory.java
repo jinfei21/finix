@@ -21,7 +21,7 @@ public class ProtobufSerializationFactory implements SerializationFactory {
     private final ConcurrentMap<String, Serialization> cached = Maps.newConcurrentMap();
 
     @Override
-    public Serialization newInstance(String name) {
+    public Serialization getInstance(String name) {
         if (StringUtils.isBlank(name)) {
             name = defaultName;
         }

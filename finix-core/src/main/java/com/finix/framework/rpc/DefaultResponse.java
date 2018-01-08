@@ -32,7 +32,6 @@ public class DefaultResponse implements Response,Serializable{
 			this.requestId = requestId;
 	}
 	
-
     public DefaultResponse(Response response) {
         this.value = response.getValue();
         this.exception = response.getException();

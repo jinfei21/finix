@@ -2,13 +2,11 @@ package com.finix.framework.rpc;
 
 import java.lang.reflect.Method;
 
-public interface Provider<T> extends Caller{
+public interface Provider extends Caller{
 
 	Method lookupMethod(String methodName,String[] parameterTypes);
 
-	Class<T> getInterface();
-	
-	T getImpl();
+	String getInterface();
 	
 	URL getServiceUrl();
 	

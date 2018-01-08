@@ -4,9 +4,9 @@ public interface Protocol {
 
 	String getName();
 	
-	<T> Exporter<T> export( Provider<T> provider,URL serviceURL);
+	 Exporter export(Provider provider,URL serviceUrl);
 	
-	<T> Refer<T> refer(Class<T> interfaceClass,URL referUrl,URL serviceUrl);
+	 Refer refer(String interfaceClass,URL referUrl,URL serviceUrl);
 	
 	void destroy();
 }

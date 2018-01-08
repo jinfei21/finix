@@ -4,15 +4,27 @@ public enum URLParamType {
 
     /** serialize **/    
     serialization("x-serialization", "protobuf.bin"),
-
+    httpSchema("httpSchema", "http"),
     haStrategy("haStrategy", "failover"),
     loadbalance("loadbalance", "roundrobin"),
-
     
     retries("retries", 0),
     nodeType("nodeType", Constants.NODE_TYPE_SERVICE),
     transExceptionStack("transExceptionStack", true),
     basePath("basePath", "/"),
+    parameterTypes("parameterTypes", null),
+    requestId("requestId", "0"),
+    clientHost("clientHost", ""),
+    connectTimeout("connectTimeout",null),
+    socketTimeout("socketTimeout",null),
+    requestConnectTimeout("requestConnectTimeout",null),
+    requestPayloadSize("requestPayloadSize", 0),
+    responsePayloadSize("responsePayloadSize", 0),
+    httpVersion("statusLine.protocolVersion", "1.1"),
+    httpStatusCode("statusLine.code", 0),
+    httpReasonPhrase("statusLine.reasonPhrase", ""),
+    returnType("returnType", null),
+    filter("filter", false),
 	version("version",Constants.DEFAULT_VERSION);
 	
     private String name;

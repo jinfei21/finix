@@ -45,6 +45,8 @@ public interface Response {
      * @param time
      */
     void setProcessTime(long time);
+    
+    int getCode();
 
     int getTimeout();
 

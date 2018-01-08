@@ -1,6 +1,6 @@
 package com.finix.framework.rpc;
 
-public interface Refer<T> extends Caller{
+public interface Refer extends Caller{
 	
     String getInterface();
     

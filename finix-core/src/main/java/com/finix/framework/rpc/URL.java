@@ -4,14 +4,18 @@ package com.finix.framework.rpc;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import com.finix.framework.common.Constants;
 import com.finix.framework.common.URLParamType;
 import com.finix.framework.exception.FinixServiceException;
 
+import lombok.Builder;
 
 
+@Builder
 public class URL {
 
     private String protocol;
@@ -32,11 +36,16 @@ public class URL {
     }
 
     public URL(String protocol, String host, int port, String path, Map<String, String> parameters) {
+    	this(protocol, host, port, path,parameters, new HashMap<String, Number>());
+    }
+    
+    public URL(String protocol, String host, int port, String path, Map<String, String> parameters, Map<String,Number> numbers){
         this.protocol = protocol;
         this.host = host;
         this.port = port;
         this.path = path;
         this.parameters = parameters;
+        this.numbers = numbers;
     }
 
     public static URL valueOf(String url) {

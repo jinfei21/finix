@@ -1,7 +1,7 @@
 package com.finix.framework.rpc;
 
-public interface Exporter<T> {
+public interface Exporter {
 
 	URL getServiceUrl();
-	Provider<T> getProvider();
+	Provider getProvider();
 }
