@@ -28,13 +28,11 @@ public class ProtobufSerializationFactory implements SerializationFactory {
         Serialization serialization = cached.get(name);
         if (serialization == null) {
         	serialization = BinderSupporter.generate(Serialization.class, name);
-        	Serialization oldSerialization =  cached.putIfAbsent(name, serialization);
-        	
-        	if(oldSerialization == null){
+        	if(serialization == null){
         		throw new FinixServiceException("Can not create Serialization instance by name: " + name);
         	}
+        	cached.putIfAbsent(name, serialization);
         	
-        	return oldSerialization;
         }
         return serialization;
 

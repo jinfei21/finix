@@ -55,7 +55,7 @@ public abstract class AbstractFilter implements Filter {
         return Info.getInstance().getAppId();
     }
 
-    protected String getBeamVersion(Caller caller) {
+    protected String getFinixVersion(Caller caller) {
         return Info.getInstance().getVersion();
     }
 

@@ -26,7 +26,7 @@ public class ClusterInvocationHandler<T> implements InvocationHandler  {
 	
 	public ClusterInvocationHandler(ClusterCaller clusterCaller) throws ClassNotFoundException{
 		this.clusterCaller = clusterCaller;
-		this.interfaceClass = Class.forName(clusterCaller.getInterfaceClass());
+		this.interfaceClass = ReflectUtil.forName(clusterCaller.getInterfaceClass());
 	}
 	
 	@Override

@@ -7,7 +7,7 @@ public enum URLParamType {
     httpSchema("httpSchema", "http"),
     haStrategy("haStrategy", "failover"),
     loadbalance("loadbalance", "roundrobin"),
-    
+    accessLog("accessLog", true),
     retries("retries", 0),
     nodeType("nodeType", Constants.NODE_TYPE_SERVICE),
     transExceptionStack("transExceptionStack", true),

@@ -29,7 +29,7 @@ public class DefaultResponse implements Response,Serializable{
 	}
 	
 	public DefaultResponse(long requestId){
-			this.requestId = requestId;
+		this.requestId = requestId;
 	}
 	
     public DefaultResponse(Response response) {

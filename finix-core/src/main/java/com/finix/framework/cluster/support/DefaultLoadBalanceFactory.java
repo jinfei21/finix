@@ -10,7 +10,7 @@ import com.finix.framework.core.BinderSupporter;
 public class DefaultLoadBalanceFactory implements LoadBalanceFactory{
 
 	@Override
-	public LoadBalance newInstance(String name) {
+	public LoadBalance getInstance(String name) {
 
 		if(StringUtils.isBlank(name)){
 			name = URLParamType.loadbalance.getValue();
