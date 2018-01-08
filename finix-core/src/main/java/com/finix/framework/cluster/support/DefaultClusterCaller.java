@@ -41,7 +41,6 @@ public class DefaultClusterCaller<T> implements ClusterCaller{
 
     private AtomicReference<List<Refer>> refers = new AtomicReference<>();
 
-    @Setter
     private RegisterNotifyListener registerNotifyListener;
     
     @Setter

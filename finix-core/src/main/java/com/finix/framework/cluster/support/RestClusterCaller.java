@@ -3,15 +3,30 @@ package com.finix.framework.cluster.support;
 import java.util.List;
 
 import com.finix.framework.cluster.ClusterCaller;
+import com.finix.framework.cluster.HaStrategy;
+import com.finix.framework.cluster.LoadBalance;
+import com.finix.framework.common.ClientConfig;
 import com.finix.framework.rpc.Refer;
 import com.finix.framework.rpc.Request;
 import com.finix.framework.rpc.Response;
 import com.finix.framework.rpc.URL;
 
+import lombok.Setter;
+
 public class RestClusterCaller implements ClusterCaller{
 	
+	private ClientConfig clientConfig;
 	
-	public RestClusterCaller(){
+    @Setter
+    private LoadBalance loadBalance;
+    
+    @Setter
+    private HaStrategy haStrategy;
+    
+    private RegisterNotifyListener registerNotifyListener;
+    
+	public RestClusterCaller(ClientConfig clientConfig){
+	
 		
 	}
 
