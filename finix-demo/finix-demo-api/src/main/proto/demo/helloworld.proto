@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+//1、protocolbuffer的maven插件生成的java文件的文件名
+//   默认为此proto文件的文件名(首字母大写)
+//2、package的设置问题。建议设置，但是不设置这里也不会报异常
+
+//package com.ppdai.demo;
+service Simple {
+    rpc SayHello (HelloRequest) returns (HelloReply) {
+    }
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+    string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+    string message = 1;
+}
