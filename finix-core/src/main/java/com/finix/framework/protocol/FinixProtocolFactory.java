@@ -27,7 +27,7 @@ public class FinixProtocolFactory implements ProtocolFactory {
     @Setter
     private FinixApacheHttpClientFactory clientFactory;
     
-    private AtomicReference<FinixProtocol> protocolRef;
+    private AtomicReference<FinixProtocol> protocolRef = new AtomicReference<FinixProtocol>();
 
     private FinixProtocolFactory() {
         init();

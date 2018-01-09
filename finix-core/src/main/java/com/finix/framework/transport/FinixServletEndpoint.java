@@ -102,7 +102,7 @@ public class FinixServletEndpoint extends AbstractServletEndpoint{
 		if (method.getParameterCount() == 1) {
 			Serialization serialization = this.getSerialization(httpRequest);
 			try {
-				byte[] data = IOUtils.toByteArray(httpRequest.getInputStream());
+				byte[] data = IOUtils.toByteArray(httpRequest.getInputStream());			
 				Object argument = serialization.deserialize(data, method.getParameterTypes()[0]);
 				return new Object[] { argument };
 			} catch (IOException e) {

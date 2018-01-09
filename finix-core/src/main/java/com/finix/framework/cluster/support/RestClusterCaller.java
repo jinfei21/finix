@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.http.HttpEntity;
 
 import com.finix.framework.cluster.ClusterCaller;
 import com.finix.framework.cluster.HaStrategy;
@@ -15,7 +16,6 @@ import com.finix.framework.common.ClientConfig;
 import com.finix.framework.common.Constants;
 import com.finix.framework.common.URLParamType;
 import com.finix.framework.exception.FinixAbstractException;
-import com.finix.framework.exception.FinixFrameworkException;
 import com.finix.framework.exception.FinixServiceException;
 import com.finix.framework.protocol.FinixProtocolFactory;
 import com.finix.framework.registry.Registry;
@@ -30,7 +30,6 @@ import com.finix.framework.rpc.URL;
 import com.finix.framework.util.ExceptionUtil;
 import com.finix.framework.util.IdGeneratorUtil;
 import com.finix.framework.util.NetUtil;
-import com.finix.framework.util.ReflectUtil;
 import com.google.common.collect.Lists;
 
 import lombok.Setter;
@@ -47,7 +46,7 @@ public class RestClusterCaller implements ClusterCaller{
     
     private Registry registry;
 
-    private AtomicReference<URL> referUrlRef;
+    private AtomicReference<URL> referUrlRef = new AtomicReference<>();
     
     private String interfaceClass;
     
@@ -58,6 +57,7 @@ public class RestClusterCaller implements ClusterCaller{
     public RestClusterCaller(String interfaceClass,ClientConfig clientConfig,Registry registry){
 		this.interfaceClass = interfaceClass;
 		this.registry = registry;
+		initProtocol();
 		initReferUrl(clientConfig);
         if (this.loadBalance == null) {
             this.loadBalance = new DefaultLoadBalanceFactory().getInstance(clientConfig.getLoadBalancer());
@@ -73,7 +73,6 @@ public class RestClusterCaller implements ClusterCaller{
 	public void init() {
 		
         //注意初始化顺序
-        initProtocol();
         initRegisterNotifyListener();
         //最后初始化refers
         initRefers();
@@ -85,10 +84,6 @@ public class RestClusterCaller implements ClusterCaller{
 	}
 	
     protected void initProtocol() {
-        if (this.protocol == null) {
-            throw new FinixFrameworkException("protocol can not be null.");
-        }
-        
         this.protocol = FinixProtocolFactory.getInstance().getProtocol();
     }
     
@@ -172,20 +167,22 @@ public class RestClusterCaller implements ClusterCaller{
         }
 	}
 	
-	public Response call(String methodName,String paramDesc,String returnType,Object data){
+	public Response call(String methodName,HttpEntity data){
 		DefaultRequest  request = new DefaultRequest();
 		request.setRequestId(IdGeneratorUtil.getRequestId());
 		request.setInterfaceName(this.interfaceClass);
 		request.setMethodName(methodName);
-		request.setParamDesc(paramDesc);
+		request.setParamDesc(null);
 		request.setArguments(new Object[] {data});
-		request.setReturnType(returnType);		
+		request.setReturnType(null);		
 		RpcContext rpcContext = RpcContext.getContext();
 		rpcContext.putAttribute(URLParamType.socketTimeout.getName(),this.referUrlRef.get().getIntParameter(URLParamType.socketTimeout.getName(), URLParamType.socketTimeout.getIntValue()));
 		rpcContext.putAttribute(URLParamType.requestConnectTimeout.getName(), this.referUrlRef.get().getIntParameter(URLParamType.requestConnectTimeout.getName(), URLParamType.requestConnectTimeout.getIntValue()));
 		rpcContext.putAttribute(URLParamType.connectTimeout.getName(), this.referUrlRef.get().getIntParameter(URLParamType.connectTimeout.getName(), URLParamType.connectTimeout.getIntValue()));
 
 		request.setAttachment(URLParamType.version.getName(), this.referUrlRef.get().getVersion());
+		request.setAttachment(URLParamType.serialization.getName(), "protobuf.json");
+		request.setAttachment(URLParamType.stream.getName(), URLParamType.stream.getValue());
 		return call(request);
 	}
 	

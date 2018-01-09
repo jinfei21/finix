@@ -4,6 +4,7 @@ public enum URLParamType {
 
     /** serialize **/    
     serialization("x-serialization", "protobuf.bin"),
+    stream("x-stream", "stream"),
     httpSchema("httpSchema", "http"),
     haStrategy("haStrategy", "failover"),
     loadbalance("loadbalance", "roundrobin"),

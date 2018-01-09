@@ -1,8 +1,13 @@
 package com.finix.framework.integration;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.entity.InputStreamEntity;
 import org.junit.Test;
 
 import com.finix.framework.cluster.ClusterCaller;
@@ -20,7 +25,6 @@ import com.finix.framework.registry.LocalRegistry;
 import com.finix.framework.registry.Registry;
 import com.finix.framework.registry.support.DirectRegistry;
 import com.finix.framework.rpc.DefaultProvider;
-import com.finix.framework.rpc.DefaultRequest;
 import com.finix.framework.rpc.Exporter;
 import com.finix.framework.rpc.Protocol;
 import com.finix.framework.rpc.Provider;
@@ -31,6 +35,9 @@ import com.finix.framework.transport.FinixApacheHttpClientFactory;
 import com.finix.framework.transport.JettyServletEndpoint;
 import com.finix.framework.transport.NonServletEndpoint;
 import com.finix.framework.util.NetUtil;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -101,7 +108,7 @@ public class RpcIntegrationTest {
         
         Simple proxy = new JdkProxyFactory().getProxy(Simple.class, invocationHandler);
         Helloworld.HelloRequest helloRequest = Helloworld.HelloRequest.newBuilder()
-                .setName("ppdai").build();
+                .setName("finix").build();
         Helloworld.HelloReply helloReply = proxy.sayHello(helloRequest);
 
         System.out.println(helloReply);
@@ -119,14 +126,37 @@ public class RpcIntegrationTest {
         Registry registry = new DirectRegistry(Collections.singletonList(registryUrl));
         
     	RestClusterCaller cluster = new RestClusterCaller("com.finix.framework.proto.Simple", new ClientConfig(), registry);
+
+    	String data = new String("{\"name\":\"jinfei\"}");
     	
-    	DefaultRequest request = new DefaultRequest();
+    	ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
+    	
+    	System.out.println(data);
+        try {
+        	JsonElement element = new JsonParser().parse(data);
+        	
+        	System.out.println("");
+        } catch (JsonParseException ex) {
+        	ex.printStackTrace();
+        }
     	
     	
+
+    	Response response = cluster.call("sayHello", new InputStreamEntity(inputStream,data.getBytes().length));
+    	CloseableHttpResponse httpResponse = (CloseableHttpResponse) response.getValue();
+    	try {
+			byte[] content = IOUtils.toByteArray(httpResponse.getEntity().getContent());
+			
+			System.out.println(new String(content));
+			
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
-    	Response response = cluster.call(request);
-    	
-    	System.out.println(response.getValue());
     	
     }
 }

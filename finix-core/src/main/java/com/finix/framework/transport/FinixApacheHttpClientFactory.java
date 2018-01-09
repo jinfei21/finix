@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.IOUtils;
@@ -51,15 +52,16 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-@Setter
-@Getter
+
 @Slf4j
 public class FinixApacheHttpClientFactory extends HttpClientFactory{
 
 	private ClientConfig clientConfig;
 	
-    private HttpClientConnectionManager connectionManager;
+    private AtomicReference<HttpClientConnectionManager> connectionManagerRef = new AtomicReference<>();
 
+    @Getter
+    @Setter
     private SerializationFactory serializationFactory;
 	
 	public FinixApacheHttpClientFactory(ClientConfig clientConfig){
@@ -69,8 +71,8 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
 	
 	@Override
 	public void init() {
-		if(this.connectionManager == null){
-			this.connectionManager = buildConnectionManager();
+		if(this.connectionManagerRef.get() == null){
+			this.connectionManagerRef.set(buildConnectionManager());
 		}
 		
 		if(this.serializationFactory == null){
@@ -80,14 +82,22 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
 
 	@Override
 	public void destroy() {
-		this.connectionManager.shutdown();
+		this.connectionManagerRef.get().shutdown();
 	}
 	
 	public void setClientConfig(ClientConfig clientConfig){
 		this.clientConfig = clientConfig;
-		this.connectionManager = buildConnectionManager();
+		this.connectionManagerRef.set(buildConnectionManager());
 	}
 
+	public void setConnectionManager(HttpClientConnectionManager connectionManager){
+		this.connectionManagerRef.set(connectionManager);
+	}
+	
+	public HttpClientConnectionManager getConnectionManager(){
+		return this.connectionManagerRef.get();
+	}
+	
 	@Override
 	public HttpClient createHttpClient(URL serviceUrl) {
 
@@ -121,6 +131,11 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
 		DefaultResponse response = new DefaultResponse(request.getRequestId());
 		
 		CloseableHttpResponse httpResponse = null;
+		String streamParam = getStreamParam(request);
+		boolean setResult = true;
+		if(URLParamType.stream.getValue().equalsIgnoreCase(streamParam)){
+			setResult = false;
+		}
 		
 		try{
 			CloseableHttpClient httpClient = this.buildHttpClient();
@@ -136,13 +151,18 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
 			
 			setStatus(httpResponse,response);
 			
-			setResult(httpResponse, request, response);
+			if(setResult){
+				setResult(httpResponse, request, response);
+			}else{
+	    		response.setCode(httpResponse.getStatusLine().getStatusCode());
+	    		response.setValue(httpResponse);
+			}
 			
 		}catch(Exception e){
 			response.setException(e);
 		}finally{
 			try{
-                if (httpResponse != null) {
+                if (httpResponse != null && setResult) {
                     httpResponse.close();
                 }
 			}catch(IOException e){
@@ -209,7 +229,9 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
     }
     
     protected void setResult(CloseableHttpResponse httpResponse, Request request, DefaultResponse response) {
-        HttpEntity entity = httpResponse.getEntity();
+    	
+    	HttpEntity entity = httpResponse.getEntity();
+    	
         byte[] content;
         try {
             content = IOUtils.toByteArray(entity.getContent());
@@ -264,6 +286,9 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
     	if(request.getArguments().length == 1){
     		try{
     			Serialization serialization = this.buildSerialization(request);
+    			if(serialization == null){
+        			return (HttpEntity) request.getArguments()[0];			      			
+    			}
     			byte[] data = serialization.serialize(request.getArguments()[0]);
     			EntityBuilder entityBuilder = EntityBuilder.create().setBinary(data);    			
     			return entityBuilder.build();
@@ -283,8 +308,16 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
     }
     
     protected Serialization buildSerialization(Request request) {
+    	String streamParam = getStreamParam(request);
+    	if(URLParamType.stream.getValue().equalsIgnoreCase(streamParam)){
+    		return null;
+    	}
         String serializationParam = getSerializationParam(request);
         return this.getSerializationFactory().getInstance(serializationParam);
+    }
+    
+    protected String getStreamParam(Request request) {
+        return MapUtils.getString(request.getAttachments(),URLParamType.stream.getName(), null);
     }
     
     protected String getSerializationParam(Request request) {
@@ -372,7 +405,7 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
 		
 		return HttpClients.custom()
 				.disableContentCompression()
-				.setConnectionManager(this.connectionManager)
+				.setConnectionManager(getConnectionManager())
 				.setDefaultRequestConfig(config)
 				.setRetryHandler(retryHandler)
 				.disableCookieManagement()
