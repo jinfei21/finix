@@ -14,6 +14,7 @@
 		<module>finix-gateway</module>
 		<module>finix-codegen</module>
 		<module>finix-apimanager</module>
+		<module>finix-svcmanager</module>
 		<module>finix-demo</module>
 	</modules>
 
