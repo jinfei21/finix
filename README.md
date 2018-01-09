@@ -20,7 +20,7 @@ Finix is a cross-language remote procedure call(RPC) framework for rapid develop
 
 # Quick Start
 
-The quick start gives very basic example of running client and server on the same machine. For the detailed information about using and developing Motan, please jump to [Documents](#documents).
+The quick start gives very basic example of running client and server on the same machine. For the detailed information about using and developing Finix, please jump to [Documents](#documents).
 
 > The minimum requirements to run the quick start are: 
 >  * JDK 1.7 or above
