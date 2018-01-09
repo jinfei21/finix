@@ -23,12 +23,12 @@ public class DefaultProvider<T> extends AbstractProvider<T> {
 
 		DefaultResponse response = new DefaultResponse();
 
-		Method method = lookupMethod(request.getMethodName(), request.getParameterTypes());
+		Method method = lookupMethod(request.getMethodName(), request.getParamDesc());
 
 		if (method == null) {
 			FinixServiceException exception = new FinixServiceException("Service method not exist: " 
 			+ request.getInterfaceName() + "#"
-			+ ReflectUtil.getMethodSignature(request.getMethodName(), request.getParameterTypes()),
+			+ ReflectUtil.getMethodDesc(request.getMethodName(), request.getParamDesc()),
 			ErrorMsgConstants.SERVICE_UNFOUND);
 			response.setException(exception);
 			

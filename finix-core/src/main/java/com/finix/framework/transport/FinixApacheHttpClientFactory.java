@@ -82,6 +82,11 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
 	public void destroy() {
 		this.connectionManager.shutdown();
 	}
+	
+	public void setClientConfig(ClientConfig clientConfig){
+		this.clientConfig = clientConfig;
+		this.connectionManager = buildConnectionManager();
+	}
 
 	@Override
 	public HttpClient createHttpClient(URL serviceUrl) {
@@ -160,16 +165,24 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
         response.setAttachment(URLParamType.httpStatusCode.name(), String.valueOf(statusLine.getStatusCode()));
         response.setAttachment(URLParamType.httpReasonPhrase.name(), statusLine.getReasonPhrase());
     }
-	
-    protected Object getResponseValue(Request request, byte[] content) {
-        Class<?> returnType = request.getReturnType();
-        Serialization serialization = this.buildSerialization(request);
-        try {
-            return serialization.deserialize(content, returnType);
-        } catch (IOException e) {
-            throw new FinixServiceException("Deserialize response content error, requestId=" + request.getRequestId(), e);
-        }
-    }
+
+	protected Object getResponseValue(Request request, byte[] content) {
+
+		Class<?> returnType = null;
+
+		try {
+			returnType = ReflectUtil.forName(request.getReturnType());
+		} catch (ClassNotFoundException e) {
+			throw new FinixServiceException(request.getReturnType() + " classname is not existed, requestId=" + request.getRequestId(), e);
+		}
+
+		Serialization serialization = this.buildSerialization(request);
+		try {
+			return serialization.deserialize(content, returnType);
+		} catch (IOException e) {
+			throw new FinixServiceException("Deserialize response content error, requestId=" + request.getRequestId(),e);
+		}
+	}
     
     protected Exception getResponseException(Request request, byte[] content) {
         //TODO 与服务端一致,暂时使用java的Object序列化
@@ -265,7 +278,7 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
     	
         throw new FinixServiceException(String.format("Interface method %s#%s  parameter count must less or equal 1, but has %s :",
                 request.getInterfaceName(),
-                ReflectUtil.getMethodSignature(request.getMethodName(), request.getParameterTypes()),
+                ReflectUtil.getMethodDesc(request.getMethodName(), request.getParamDesc()),
                 request.getArguments().length));
     }
     
@@ -290,12 +303,12 @@ public class FinixApacheHttpClientFactory extends HttpClientFactory{
     	
     	headers.add(new BasicHeader(URLParamType.requestId.getName(),String.valueOf(request.getRequestId())));;
     	
-    	if(request.getParameterTypes() != null){
-    		headers.add(new BasicHeader(URLParamType.parameterTypes.getName(),StringUtils.join(request.getParameterTypes())));
+    	if(request.getParamDesc() != null){
+    		headers.add(new BasicHeader(URLParamType.paramDesc.getName(),request.getParamDesc()));
     	}
     	
     	if(request.getReturnType() != null){
-    		headers.add(new BasicHeader(URLParamType.returnType.getName(),request.getReturnType().getName()));
+    		headers.add(new BasicHeader(URLParamType.returnType.getName(),request.getReturnType()));
     	}
     	
     	return headers;

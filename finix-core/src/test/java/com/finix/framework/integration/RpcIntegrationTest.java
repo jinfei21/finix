@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.finix.framework.cluster.ClusterCaller;
 import com.finix.framework.cluster.support.DefaultClusterCaller;
+import com.finix.framework.cluster.support.RestClusterCaller;
 import com.finix.framework.common.ClientConfig;
 import com.finix.framework.proto.Helloworld;
 import com.finix.framework.proto.Simple;
@@ -19,9 +20,11 @@ import com.finix.framework.registry.LocalRegistry;
 import com.finix.framework.registry.Registry;
 import com.finix.framework.registry.support.DirectRegistry;
 import com.finix.framework.rpc.DefaultProvider;
+import com.finix.framework.rpc.DefaultRequest;
 import com.finix.framework.rpc.Exporter;
 import com.finix.framework.rpc.Protocol;
 import com.finix.framework.rpc.Provider;
+import com.finix.framework.rpc.Response;
 import com.finix.framework.rpc.URL;
 import com.finix.framework.transport.AbstractServletEndpoint;
 import com.finix.framework.transport.FinixApacheHttpClientFactory;
@@ -102,5 +105,28 @@ public class RpcIntegrationTest {
         Helloworld.HelloReply helloReply = proxy.sayHello(helloRequest);
 
         System.out.println(helloReply);
+    }
+    
+    @Test
+    public void testRest(){
+        //初始化注册中心
+        URL registryUrl = URL.builder()
+                .host(NetUtil.getLocalIp())
+                .port(8080)
+                .path("/finix")
+                .parameters(new HashMap<>())
+                .build();
+        Registry registry = new DirectRegistry(Collections.singletonList(registryUrl));
+        
+    	RestClusterCaller cluster = new RestClusterCaller("com.finix.framework.proto.Simple", new ClientConfig(), registry);
+    	
+    	DefaultRequest request = new DefaultRequest();
+    	
+    	
+    	
+    	Response response = cluster.call(request);
+    	
+    	System.out.println(response.getValue());
+    	
     }
 }

@@ -33,12 +33,12 @@ public abstract class AbstractProvider<T> implements Provider{
 	}
 	
     @Override
-    public Method lookupMethod(String methodName, String[] parameterTypes) {
+    public Method lookupMethod(String methodName, String paramDesc) {
     	
     	Method method = this.getMethodMap().get(methodName);
     	
     	if(method == null){
-            String key = ReflectUtil.getMethodSignature(methodName, parameterTypes);
+            String key = ReflectUtil.getMethodDesc(methodName, paramDesc);
             return this.getMethodMap().get(key);
     	}
     	
@@ -79,7 +79,7 @@ public abstract class AbstractProvider<T> implements Provider{
     			this.methodMap.put(methodName, method);
     		}
     		for(Method method:nameMethods){
-    			this.methodMap.put(ReflectUtil.getMethodSignature(method), method);
+    			this.methodMap.put(ReflectUtil.getMethodDesc(method), method);
     		}
     	}
     }

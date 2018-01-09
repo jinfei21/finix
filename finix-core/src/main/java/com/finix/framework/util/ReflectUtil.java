@@ -1,12 +1,15 @@
 package com.finix.framework.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -26,35 +29,84 @@ public class ReflectUtil {
 
     private static final int PRIMITIVE_CLASS_NAME_MAX_LENGTH = 7;
 
-    public static String getMethodSignature(Method method) {
-        return getMethodSignature(method.getName(), method.getParameterTypes());
-    }
+//    public static String getMethodSignature(Method method) {
+//        return getMethodSignature(method.getName(), method.getParameterTypes());
+//    }
+//
+//    public static String getMethodSignature(String methodName, Class<?>[] parameterTypes) {
+//        return getMethodSignature(methodName, getMethodParameterTypes(parameterTypes));
+//    }
+//
+//    public static String getMethodSignature(String methodName, String[] parameterTypes) {
+//        StringBuilder builder = new StringBuilder();
+//        builder.append(methodName);
+//        if (parameterTypes != null) {
+//            builder.append("(");
+//            builder.append(StringUtils.join(parameterTypes));
+//            builder.append(")");
+//        }
+//        return builder.toString();
+//    }
+//
+//    public static String[] getMethodParameterTypes(Method method) {
+//        return getMethodParameterTypes(method.getParameterTypes());
+//    }
+//
+//    public static String[] getMethodParameterTypes(Class<?>[] parameterTypes) {
+//        String[] parameterTypeStrings = new String[parameterTypes.length];
+//        for (int i = 0; i < parameterTypes.length; i++) {
+//            parameterTypeStrings[i] = parameterTypes[i].getName();
+//        }
+//        return parameterTypeStrings;
+//    }
+    
+    
+    /**
+     * 获取method方式的接口参数，以逗号分割，拼接clz列表。 如果没有参数，那么void表示
+     * 
+     * @param method
+     * @return
+     */
+    public static String getMethodParamDesc(Method method) {
+        if (method.getParameterTypes() == null || method.getParameterTypes().length == 0) {
+            return EMPTY_PARAM;
+        }
 
-    public static String getMethodSignature(String methodName, Class<?>[] parameterTypes) {
-        return getMethodSignature(methodName, getMethodParameterTypes(parameterTypes));
-    }
-
-    public static String getMethodSignature(String methodName, String[] parameterTypes) {
         StringBuilder builder = new StringBuilder();
-        builder.append(methodName);
-        if (parameterTypes != null) {
-            builder.append("(");
-            builder.append(StringUtils.join(parameterTypes));
-            builder.append(")");
+
+        Class<?>[] clzs = method.getParameterTypes();
+
+        for (Class<?> clz : clzs) {
+            String className = getName(clz);
+            builder.append(className).append(PARAM_CLASS_SPLIT);
         }
-        return builder.toString();
+
+        return builder.substring(0, builder.length() - 1);
     }
 
-    public static String[] getMethodParameterTypes(Method method) {
-        return getMethodParameterTypes(method.getParameterTypes());
+    /**
+     * 获取方法的标示 : method_name + "(" + paramDesc + ")"
+     * 
+     * @param method
+     * @return
+     */
+    public static String getMethodDesc(Method method) {
+        String methodParamDesc = getMethodParamDesc(method);
+        return getMethodDesc(method.getName(), methodParamDesc);
     }
 
-    public static String[] getMethodParameterTypes(Class<?>[] parameterTypes) {
-        String[] parameterTypeStrings = new String[parameterTypes.length];
-        for (int i = 0; i < parameterTypes.length; i++) {
-            parameterTypeStrings[i] = parameterTypes[i].getName();
+    /**
+     * 获取方法的标示 : method_name + "(" + paramDesc + ")"
+     * 
+     * @param
+     * @return
+     */
+    public static String getMethodDesc(String methodName, String paramDesc) {
+        if (paramDesc == null) {
+            return methodName + "()";
+        } else {
+            return methodName + "(" + paramDesc + ")";
         }
-        return parameterTypeStrings;
     }
 
     public static Class<?>[] forNames(String classList) throws ClassNotFoundException {

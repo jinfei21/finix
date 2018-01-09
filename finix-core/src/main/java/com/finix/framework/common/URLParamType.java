@@ -12,7 +12,7 @@ public enum URLParamType {
     nodeType("nodeType", Constants.NODE_TYPE_SERVICE),
     transExceptionStack("transExceptionStack", true),
     basePath("basePath", "/"),
-    parameterTypes("parameterTypes", null),
+    paramDesc("paramDesc", null),
     requestId("requestId", "0"),
     clientHost("clientHost", ""),
     connectTimeout("connectTimeout",2000),

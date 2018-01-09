@@ -16,9 +16,9 @@ public class DefaultRequest implements Serializable, Request {
     private long requestId;
     private String interfaceName;
     private String methodName;
-    private String[] parameterTypes;
+    private String paramDesc;
     private Object[] arguments;
-    private Class<?> returnType;
+    private String returnType;
     private Map<String, String> attachments = new HashMap<>();
     private int retries = 0;
 

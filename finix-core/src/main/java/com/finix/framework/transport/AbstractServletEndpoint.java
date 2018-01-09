@@ -50,7 +50,11 @@ public abstract class AbstractServletEndpoint extends HttpServlet implements End
         return newServiceUrl;
     }
 
-    protected String getProviderKey(String interfaceName, String version) {
-        return StringUtils.isBlank(version) ? interfaceName : interfaceName + "?version=" + version;
-    }
+	protected String getProviderKey(String interfaceName, String version) {
+		if (StringUtils.isBlank(version)) {
+			version = URLParamType.version.getValue();
+		}
+
+		return interfaceName + "?version=" + version;
+	}
 }

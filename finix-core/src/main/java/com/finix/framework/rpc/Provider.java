@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 
 public interface Provider extends Caller{
 
-	Method lookupMethod(String methodName,String[] parameterTypes);
+	Method lookupMethod(String methodName,String paramDesc);
 
 	String getInterface();
 	

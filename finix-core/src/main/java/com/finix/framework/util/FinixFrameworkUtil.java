@@ -13,7 +13,7 @@ public class FinixFrameworkUtil {
     public static String toString(Request request) {
         return "requestId=" + request.getRequestId()
                 + " interface=" + request.getInterfaceName()
-                + " method=" + ReflectUtil.getMethodSignature(request.getMethodName(), request.getParameterTypes());
+                + " method=" + ReflectUtil.getMethodDesc(request.getMethodName(), request.getParamDesc());
     }
 
 }

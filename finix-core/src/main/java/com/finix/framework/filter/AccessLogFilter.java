@@ -62,8 +62,8 @@ public class AccessLogFilter extends AbstractFilter {
         append(builder, request.getInterfaceName());
         //method
         append(builder, request.getMethodName());
-        //parameterTypes
-        append(builder, getParameterTypes(request));
+        //paramDesc
+        append(builder, getParamDesc(request));
         //version
         append(builder, getInterfaceVersion(caller));
         //finixVersion

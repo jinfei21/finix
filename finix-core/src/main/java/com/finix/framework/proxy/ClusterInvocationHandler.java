@@ -49,9 +49,9 @@ public class ClusterInvocationHandler<T> implements InvocationHandler  {
 		request.setRequestId(IdGeneratorUtil.getRequestId());
 		request.setInterfaceName(this.interfaceClass.getName());
 		request.setMethodName(method.getName());
-		request.setParameterTypes(ReflectUtil.getMethodParameterTypes(method));
+		request.setParamDesc(ReflectUtil.getMethodParamDesc(method));
 		request.setArguments(args);
-		request.setReturnType(method.getReturnType());
+		request.setReturnType(method.getReturnType().getName());
 		
 		RpcContext rpcContext = RpcContext.getContext();
 		rpcContext.putAttribute(URLParamType.socketTimeout.getName(), clusterCaller.getReferUrl().getIntParameter(URLParamType.socketTimeout.getName(), URLParamType.socketTimeout.getIntValue()));

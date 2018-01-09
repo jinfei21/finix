@@ -1,6 +1,7 @@
 package com.finix.framework.protocol;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.finix.framework.common.ClientConfig;
 import com.finix.framework.common.Constants;
@@ -17,18 +18,22 @@ import lombok.Setter;
 
 public class FinixProtocolFactory implements ProtocolFactory {
 	
+	
     @Getter
     @Setter
     private AbstractServletEndpoint endpoint;
+	
     @Getter
     @Setter
-    private HttpClientFactory clientFactory;
+    private FinixApacheHttpClientFactory clientFactory;
+    
+    private AtomicReference<FinixProtocol> protocolRef;
 
-    public FinixProtocolFactory() {
+    private FinixProtocolFactory() {
         init();
     }
 
-    public FinixProtocolFactory(AbstractServletEndpoint endpoint, HttpClientFactory clientFactory) {
+    private FinixProtocolFactory(AbstractServletEndpoint endpoint, FinixApacheHttpClientFactory clientFactory) {
         this.endpoint = endpoint;
         this.clientFactory = clientFactory;
         init();
@@ -48,12 +53,26 @@ public class FinixProtocolFactory implements ProtocolFactory {
     	if(this.clientFactory == null){
     		this.clientFactory = new FinixApacheHttpClientFactory(new ClientConfig());
     	}
+    	this.protocolRef.set(new FinixProtocol(endpoint,clientFactory));
     }
 	
-	@Override
-	public Protocol newInstance() {
-		return new FinixProtocol(endpoint, clientFactory);
+    
+	
+	public static FinixProtocolFactory getInstance() {
+		return FinixProtocolFactoryHolder.INSTANCE;
 	}
 
-	
+    private static class FinixProtocolFactoryHolder {
+        private static final FinixProtocolFactory INSTANCE = new FinixProtocolFactory();
+    }
+
+	@Override
+	public Protocol getProtocol() {
+		return this.protocolRef.get();
+	}
+
+	@Override
+	public void setClientConfig(ClientConfig clientConfig) {
+		this.clientFactory.setClientConfig(clientConfig);
+	}
 }

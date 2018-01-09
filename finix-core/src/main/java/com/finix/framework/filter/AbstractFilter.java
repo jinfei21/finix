@@ -1,7 +1,5 @@
 package com.finix.framework.filter;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.finix.framework.common.Constants;
 import com.finix.framework.common.Info;
 import com.finix.framework.common.URLParamType;
@@ -42,8 +40,8 @@ public abstract class AbstractFilter implements Filter {
                 : ((Refer) caller).getServiceUrl().getServerPortStr();
     }
 
-    protected String getParameterTypes(Request request) {
-        return StringUtils.join(request.getParameterTypes());
+    protected String getParamDesc(Request request) {
+        return request.getParamDesc();
     }
 
     protected String getInterfaceVersion(Caller caller) {

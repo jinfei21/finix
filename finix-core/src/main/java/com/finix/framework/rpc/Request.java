@@ -8,11 +8,11 @@ public interface Request {
 
     String getMethodName();
 
-    String[] getParameterTypes();
+    String getParamDesc();
 
     Object[] getArguments();
 
-    Class<?> getReturnType();
+    String getReturnType();
 
     Map<String, String> getAttachments();
 

@@ -1,8 +1,6 @@
 package com.finix.framework.transport;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
@@ -32,7 +30,6 @@ import com.finix.framework.serialize.Serialization;
 import com.finix.framework.serialize.SerializationFactory;
 import com.finix.framework.util.ExceptionUtil;
 import com.finix.framework.util.NumberUtil;
-import com.finix.framework.util.ReflectUtil;
 import com.google.common.collect.Maps;
 
 import lombok.Setter;
@@ -88,7 +85,7 @@ public class FinixServletEndpoint extends AbstractServletEndpoint{
 		request.setRequestId(NumberUtil.parseLong(httpRequest.getHeader(URLParamType.requestId.name()), 0L));
 		request.setInterfaceName(getInterfaceName(httpRequest));
 		request.setMethodName(getMethodName(httpRequest));
-		request.setParameterTypes(getParameterTypes(httpRequest));
+		request.setParamDesc(getParamDesc(httpRequest));
 		request.setReturnType(getReturnType(httpRequest));
 		request.setAttachments(getAttachments(httpRequest));		
 		request.setArguments(getRequestArguments(httpRequest, request, provider));
@@ -98,10 +95,9 @@ public class FinixServletEndpoint extends AbstractServletEndpoint{
 	}
 	
 	protected Object[] getRequestArguments(HttpServletRequest httpRequest, Request request, Provider provider) {
-		Method method = provider.lookupMethod(request.getMethodName(), request.getParameterTypes());
+		Method method = provider.lookupMethod(request.getMethodName(), request.getParamDesc());
 		if (method == null) {
-			throw new FinixServiceException(
-					String.format("Can not find method %s#%s", request.getInterfaceName(), request.getMethodName()));
+			throw new FinixServiceException(String.format("Can not find method %s#%s", request.getInterfaceName(), request.getMethodName()));
 		}
 		if (method.getParameterCount() == 1) {
 			Serialization serialization = this.getSerialization(httpRequest);
@@ -137,24 +133,12 @@ public class FinixServletEndpoint extends AbstractServletEndpoint{
         return attachments;
     }
     
-    protected Class<?> getReturnType(HttpServletRequest httpRequest) {
-        String returnType = httpRequest.getHeader(URLParamType.returnType.name());
-        if (returnType != null) {
-            try {
-                return ReflectUtil.forName(returnType);
-            } catch (ClassNotFoundException e) {
-                throw new FinixServiceException("Can not find returnType " + returnType, e);
-            }
-        }
-        return null;
+    protected String getReturnType(HttpServletRequest httpRequest) {
+        return httpRequest.getHeader(URLParamType.returnType.name());
     }
     
-    protected String[] getParameterTypes(HttpServletRequest httpRequest) {
-        String parameterTypes = httpRequest.getHeader(URLParamType.parameterTypes.name());
-        if (parameterTypes != null) {
-            return parameterTypes.split(Constants.SEPERATOR_ARRAY);
-        }
-        return null;
+    protected String getParamDesc(HttpServletRequest httpRequest) {
+        return httpRequest.getHeader(URLParamType.paramDesc.getName());
     }
 	
     protected String getInterfaceName(HttpServletRequest httpRequest) {
