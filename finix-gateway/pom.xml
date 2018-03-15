@@ -12,239 +12,146 @@
 	<artifactId>finix-gateway</artifactId>
 
 	<properties>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
-		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
-		<!-- log4j日志文件管理包版本 -->
-		<slf4j.version>1.7.7</slf4j.version>
-		<log4j.version>1.2.17</log4j.version>
-		<mysql.version>5.1.21</mysql.version>
-		<logback.version>1.1.1</logback.version>
-		<!-- <ribbon.version>2.2.2</ribbon.version> -->
-		<ribbon.version>0.3.13</ribbon.version>
-		<turbine.version>0.4</turbine.version>
-		<cat.version>1.4.1</cat.version>
-		<archaius.version>0.5.11</archaius.version>
-		<hystrix.version>1.4.12</hystrix.version>
-		<servlet.version>3.0.1</servlet.version>
-		<HikariCP.version>1.3.3</HikariCP.version>
-		<fastjson.version>1.2.7</fastjson.version>
-		<servo.version>0.4.44</servo.version>
-		<jersey.version>1.11</jersey.version>
-		<groovy.version>2.0.2</groovy.version>
-		<junit.version>4.11</junit.version>
-		<httpclient.version>4.3.3</httpclient.version>
-		<ppdai-tool.version>0.0.3</ppdai-tool.version>
-		<logmetric.version>0.0.3</logmetric.version>
-		<jetty.version>8.1.0.RC5</jetty.version>
-		<commons-io.version>2.4</commons-io.version>
-		<okhttp.version>2.7.5</okhttp.version>
-		<commons-fileupload.version>1.2.2</commons-fileupload.version>
-		<json.version>20090211</json.version>
-		<mockito.version>1.8.5</mockito.version>
-		<powermock.version>1.5</powermock.version>
-		<netflix-commons.version>0.1.1</netflix-commons.version>
-		<mockito.version>1.8.5</mockito.version>
+		<netty.version>4.1.15.Final</netty.version>
+		<netty-tcnative.version>2.0.6.Final</netty-tcnative.version>
+		<rxjava.version>1.1.6</rxjava.version>
+		<guava.version>16.0.1</guava.version>
+		<metrics.version>3.1.1</metrics.version>
+		<antlr.version>4.5.1-1</antlr.version>
+		<spring.version>1.5.2.RELEASE</spring.version>
+		<jackson.version>2.7.9</jackson.version>
+
+		<snakeyaml.version>1.16</snakeyaml.version>
+
 	</properties>
 
 
 
 	<dependencies>
+
 		<dependency>
-			<groupId>com.ppdai.logmetric</groupId>
-			<artifactId>logmetric-client</artifactId>
-			<version>${logmetric.version}</version>
+			<groupId>io.reactivex</groupId>
+			<artifactId>rxjava</artifactId>
+			<version>${rxjava.version}</version>
+		</dependency>
+
+		<!-- Netty -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>${netty.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>io.netty</groupId> <artifactId>netty-transport-native-epoll</artifactId> 
+			<version>${netty.version}</version> <classifier>${netty-transport-native-epoll.classifier}</classifier> 
+			</dependency> <dependency> <groupId>io.netty</groupId> <artifactId>netty-tcnative-boringssl-static</artifactId> 
+			<version>${netty-tcnative.version}</version> <classifier>${netty-tcnative.classifier}</classifier> 
+			</dependency> -->
+
+
+		<!-- Metrics -->
+		<dependency>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-core</artifactId>
+			<version>${metrics.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.ppdai.ppdai-tools</groupId>
-			<artifactId>ppdai-tools</artifactId>
-			<version>${ppdai-tool.version}</version>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-jvm</artifactId>
+			<version>${metrics.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>${fastjson.version}</version>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-json</artifactId>
+			<version>${metrics.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.squareup.okhttp</groupId>
-			<artifactId>okhttp</artifactId>
-			<version>${okhttp.version}</version>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-graphite</artifactId>
+			<version>${metrics.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-healthchecks</artifactId>
+			<version>${metrics.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hdrhistogram</groupId>
+			<artifactId>HdrHistogram</artifactId>
+			<version>2.1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr4-runtime</artifactId>
+			<version>${antlr.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+			<version>1.16.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-dependencies</artifactId>
+			<version>${spring.version}</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>${commons-io.version}</version>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
-
 		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>${commons-fileupload.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>${mockito.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>${json.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-mockito</artifactId>
-			<version>${powermock.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.netflix.netflix-commons</groupId>
-			<artifactId>netflix-commons-util</artifactId>
-			<version>${netflix-commons.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>${mockito.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-all</artifactId>
-			<version>${groovy.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.dianping.cat</groupId>
-			<artifactId>cat-client</artifactId>
-			<version>${cat.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>${servlet.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-			<version>${logback.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-access</artifactId>
-			<version>${logback.version}</version>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>${snakeyaml.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
+			<version>1.7.25</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>log4j-over-slf4j</artifactId>
-			<version>${slf4j.version}</version>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.25</version>
 		</dependency>
-
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j.version}</version>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.netflix.hystrix</groupId>
-			<artifactId>hystrix-core</artifactId>
-			<version>${hystrix.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.netflix.ribbon</groupId>
-			<artifactId>ribbon-core</artifactId>
-			<version>${ribbon.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.netflix.ribbon</groupId>
-			<artifactId>ribbon-eureka</artifactId>
-			<version>${ribbon.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.netflix.ribbon</groupId>
-			<artifactId>ribbon-httpclient</artifactId>
-			<version>${ribbon.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.netflix.turbine</groupId>
-			<artifactId>turbine-core</artifactId>
-			<version>${turbine.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<version>${HikariCP.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>${httpclient.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.netflix.archaius</groupId>
-			<artifactId>archaius-core</artifactId>
-			<version>${archaius.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.netflix.servo</groupId>
-			<artifactId>servo-core</artifactId>
-			<version>${servo.version}</version>
-		</dependency>
-
-
 	</dependencies>
 
 
